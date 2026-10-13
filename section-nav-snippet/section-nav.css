@@ -1,0 +1,267 @@
+/* ==========================================================================
+   Section Nav
+   In-page nav with mobile dropdown + horizontal scroll-on-overflow.
+   ========================================================================== */
+
+#sectionNav {
+    /* Sticks below the top of the viewport as the page scrolls.
+       Adjust `top` to match your site's fixed header height (0 if none). */
+    position: sticky;
+    top: 20px;
+    z-index: 3;
+    margin-bottom: 60px;
+    transition: top 350ms linear;
+}
+
+.section-nav__wrap {
+    background-color: #070D63;
+    border-radius: 15px;
+    margin-right: -10px;
+    margin-left: -10px;
+
+    @media (min-width: 992px) {
+        margin-right: 0;
+        margin-left: 0;
+        border-radius: 60px;
+    }
+
+    .nav-link {
+        color: #fff;
+
+        @media (min-width: 992px) {
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1;
+        }
+    }
+}
+
+.section-nav__toggle {
+    background: transparent;
+    border: none;
+    color: #fff;
+    width: 100%;
+    position: relative;
+    padding: 12px 20px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    &:after {
+        content: '';
+        display: inline-block;
+        width: 9px;
+        height: 9px;
+        border-right: 1.5px solid #fff;
+        border-bottom: 1.5px solid #fff;
+        transform: rotate(45deg);
+        margin-top: -4px;
+        transition: transform 0.2s ease-out;
+    }
+}
+
+/* #sectionNavCollapse ID is included here to out-specificity Bootstrap's
+   `.collapse:not(.show) { display: none; }` at the lg breakpoint, so the
+   nav shows as a horizontal bar on desktop without needing to be toggled
+   open first. (The source site achieves this instead via CSS cascade
+   layers — @layer bootstrap vs. unlayered component styles — but that
+   requires wrapping Bootstrap's own CSS in a layer, which most consuming
+   projects won't have set up, so this sample uses a specificity bump.) */
+#sectionNavCollapse.section-nav__collapse {
+    padding: 48px 0px 30px;
+    background: linear-gradient(180deg, #070D63 10%, #00021D 100%);
+
+    @media (max-width: 991px) {
+        position: absolute;
+        border-radius: 15px;
+        width: calc(100% - 40px);
+        top: 0;
+        left: 20px;
+        z-index: -1;
+    }
+
+    @media (min-width: 992px) {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 7px 20px;
+        background: linear-gradient(90deg, #070D63 46.32%, #00021D 100%);
+        border-radius: 60px;
+        gap: 8px;
+    }
+
+    .scrollable-list__btn {
+        border: solid 2px hsla(0, 0%, 100%, .2);
+
+        &:after {
+            background-image: url(images/icon-arrow-right-white.svg);
+        }
+    }
+}
+
+.section-nav__list {
+    list-style: none;
+    padding: 15px 10px 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    border-top: 1px solid rgba(255, 255, 255, 0.20);
+
+    @media (min-width: 992px) {
+        border-top: none;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: 0;
+        padding: 0;
+    }
+}
+
+.section-nav__item {
+    padding: 9px 30px 9px 10px;
+
+    @media (min-width: 992px) {
+        padding: 13px 15px;
+    }
+
+    &:first-of-type {
+        @media (min-width: 992px) {
+            padding: 13px 15px 13px 22px;
+        }
+    }
+
+    &:has(.nav-link.active) {
+        background: linear-gradient(90deg, rgba(255, 92, 244, 0.20) 0%, #FF5CF4 100%);
+        border-radius: 5px;
+
+        &:first-of-type {
+            @media (min-width: 992px) {
+                border-radius: 30px 5px 5px 30px;
+            }
+        }
+    }
+
+    &:hover,
+    &:focus-within {
+        background-color: rgba(56, 149, 255, 0.2);
+        border-radius: 5px;
+
+        &:nth-of-type(1) {
+            @media (min-width: 992px) {
+                border-radius: 30px 5px 5px 30px;
+                padding: 13px 15px 13px 22px;
+            }
+        }
+
+        .nav-link {
+            box-shadow: none;
+        }
+    }
+}
+
+.section-nav__cta {
+    padding: 0 20px;
+    margin-top: 15px;
+
+    @media (min-width: 992px) {
+        padding: 0;
+        flex-shrink: 0;
+        margin-top: 0;
+    }
+}
+
+
+/* ==========================================================================
+   Scrollable list base (shared component)
+   Powers the horizontal scroll-on-overflow behavior + prev/next buttons.
+   Classes (.scrolled, .end-scrolled, .js-is-overflown) are toggled by
+   horizontal-scroll.js — this component doesn't work without that script.
+   ========================================================================== */
+
+.scrollable-list__wrapper {
+    @media (min-width: 992px) {
+        overflow: auto;
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        &:has(.js-is-overflown:not(.end-scrolled)) {
+            .scrollable-list__btn-next {
+                display: block;
+            }
+        }
+
+        &:has(.js-is-overflown.scrolled) {
+            .scrollable-list__btn-prev {
+                display: block;
+            }
+        }
+    }
+}
+
+.scrollable-list__btn {
+    display: none;
+
+    @media (min-width: 992px) {
+        position: absolute;
+        height: 42px;
+        width: 42px;
+        border-radius: 50%;
+        background: transparent;
+        z-index: 1;
+        border: 1.8px solid rgba(60, 69, 78, .2);
+
+        &:after {
+            content: "";
+            position: absolute;
+            height: 16px;
+            width: 16px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-image: url(images/icon-arrow-right.svg);
+            background-position: center;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        &.scrollable-list__btn-prev {
+            left: 0;
+            display: none;
+
+            &:after {
+                transform: translate(-50%, -50%) scaleX(-1);
+            }
+        }
+
+        &.scrollable-list__btn-next {
+            right: 0;
+            display: none;
+        }
+    }
+}
+
+.scrollable-list {
+    @media (min-width: 992px) {
+        overflow-x: scroll;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        white-space: nowrap;
+
+        &.js-is-overflown {
+            mask-image: linear-gradient(90deg, black 90%, transparent 95%);
+        }
+
+        &.scrolled:not(.end-scrolled) {
+            mask-image: linear-gradient(90deg, transparent 5%, black 10%, black 90%, transparent 95%);
+        }
+
+        &.end-scrolled {
+            mask-image: linear-gradient(90deg, transparent 5%, black 10%);
+        }
+    }
+}

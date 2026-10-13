@@ -1,0 +1,50 @@
+<!--
+  Section Nav
+  Sticky in-page navigation with a mobile-collapsed dropdown, horizontal
+  scroll-on-overflow for desktop, and a custom scrollspy (no Bootstrap
+  ScrollSpy — it drops active state on zero-height anchor targets).
+
+  The <li> items below are usually looped from CMS data; each `href`
+  must match the `id` of an anchor/section further down the page.
+
+  Requires: jQuery + Bootstrap's Collapse component (for the mobile toggle).
+-->
+<div id="sectionNav" class="section-nav-js">
+    <div class="container-fluid">
+        <div class="section-nav__wrap">
+            <div class="section-nav__mobile-menu d-lg-none">
+                <button id="sectionNavCollapseToggle" class="section-nav__toggle collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sectionNavCollapse" aria-expanded="false" aria-controls="sectionNavCollapse">
+                    Select a Section
+                </button>
+            </div>
+            <div class="section-nav__collapse collapse" id="sectionNavCollapse">
+                <div class="scrollable-list__wrapper">
+                    <button class="scrollable-list__btn scrollable-list__btn-prev" type="button" aria-label="Previous section"></button>
+
+                    <nav class="section-nav scrollable-list">
+                        <div id="sectionNavScrollSpy" tabindex="0">
+                            <ul class="section-nav__list js-section-nav-list">
+                                <li class="section-nav__item">
+                                    <a class="nav-link" href="#anchorNav01">Section One</a>
+                                </li>
+                                <li class="section-nav__item">
+                                    <a class="nav-link" href="#anchorNav02">Section Two</a>
+                                </li>
+                                <li class="section-nav__item">
+                                    <a class="nav-link" href="#anchorNav03">Section Three</a>
+                                </li>
+                                <li class="section-nav__item">
+                                    <a class="nav-link" href="#anchorNav04">Section Four</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <button class="scrollable-list__btn scrollable-list__btn-next" type="button" aria-label="Next section"></button>
+                </div>
+                <div class="section-nav__cta">
+                    <a href="#" class="btn btn-sm btn-primary">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
